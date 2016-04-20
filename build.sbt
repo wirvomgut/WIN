@@ -1,3 +1,5 @@
+import NativePackagerKeys._
+
 enablePlugins(ScalaJSPlugin)
 
 name := "WIN"
@@ -10,10 +12,25 @@ scalaJSUseRhino in Global := false
 
 skip in packageJSDependencies := false
 
-persistLauncher in Compile := true
+val app = crossProject.settings(
+  scalaVersion := "2.11.8",
+  libraryDependencies ++= Seq(
+    "com.lihaoyi" %%% "scalatags" % "0.5.4",
+    "com.lihaoyi" %%% "upickle" % "0.3.9"
+  )
+).jsSettings(
+  libraryDependencies ++= Seq(
+    "org.scala-js" %%% "scalajs-dom" % "0.9.0"
+  )
+).jvmSettings(
+  libraryDependencies ++= Seq(
+    "io.spray" %% "spray-can" % "1.3.3",
+    "io.spray" %% "spray-routing" % "1.3.3",
+    "com.typesafe.akka" %% "akka-actor" % "2.4.4"
+  )
+)
 
-persistLauncher in Test := false
-
-libraryDependencies += "be.doeraene" %%% "scalajs-jquery" % "0.9.0"
-
-jsDependencies += "org.webjars" % "jquery" % "2.1.4" / "2.1.4/jquery.js"
+lazy val appJS = app.js
+lazy val appJVM = app.jvm.settings(
+  (resources in Compile) += (fastOptJS in (appJS, Compile)).value.data
+)
