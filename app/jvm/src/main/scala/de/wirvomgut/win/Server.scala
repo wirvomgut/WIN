@@ -11,7 +11,7 @@ import upickle.default._
 object Server extends SimpleRoutingApp{
   def main(args: Array[String]): Unit = {
     implicit val system = ActorSystem()
-    val port = Properties.envOrElse("PORT", "8080").toInt
+    val port = Properties.envOrElse("PORT", "8888").toInt
     startServer("0.0.0.0", port = port){
       get{
         pathSingleSlash{

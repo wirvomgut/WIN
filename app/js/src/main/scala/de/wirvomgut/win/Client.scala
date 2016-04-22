@@ -12,6 +12,7 @@ import upickle.default._
 object Client extends{
   @JSExport
   def main(container: html.Div) = {
+    container.setAttribute("class", "ui input")
     val inputBox = input.render
     val outputBox = ul.render
     def update() = Ajax.post("/ajax/list", inputBox.value).foreach{ xhr =>
