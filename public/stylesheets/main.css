@@ -1,0 +1,6 @@
+body > .grid {
+  height: 100%;
+}
+.login-column {
+  max-width: 450px;
+}

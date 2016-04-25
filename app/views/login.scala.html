@@ -1,0 +1,39 @@
+@import tags._
+@import common._
+
+@mainLayout(title = "Login") {
+    <div class="ui middle aligned center aligned grid">
+        <div class="column login-column">
+            <h2 class="ui center aligned header">
+                <img src="assets/images/wvg_logo_quad.png" class="ui tiny image">
+                <div class="content">
+                    Bitte melden sie sich an
+                </div>
+            </h2>
+            <form class="ui large form">
+                <div class="ui stacked segment">
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="user icon"></i>
+                            <input type="text" name="email" placeholder="E-mail Adresse">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="lock icon"></i>
+                            <input type="password" name="password" placeholder="Passwort">
+                        </div>
+                    </div>
+                    <div class="ui fluid large green submit button">Login</div>
+                </div>
+
+                <div class="ui error message"></div>
+
+            </form>
+
+            <div class="ui message">
+                Noch nicht angemeldet? <a href="#">Registrieren</a>
+            </div>
+        </div>
+    </div>
+}
