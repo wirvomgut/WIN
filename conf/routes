@@ -2,15 +2,14 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# An example controller showing a sample home page
-GET     /echo/:msg                  controllers.HomeController.index(msg)
-# An example controller showing how to use dependency injection
-GET     /count                      controllers.CountController.count
-# An example controller showing how to write asynchronous code
-GET     /message                    controllers.AsyncController.message
-
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+GET         /assets/*file                   controllers.Assets.versioned(path="/public", file: Asset)
 
-GET    /products                    controllers.Application.listProducts
-GET    /login                       controllers.LoginController.index
+GET         /                               controllers.Application.index()
+GET         /login                          controllers.LoginController.index
+GET         /protected/index.html           controllers.LoginController.protectedIndex
+
+# pac4j
+GET         /callback                       @org.pac4j.play.CallbackController.callback()
+POST        /callback                       @org.pac4j.play.CallbackController.callback()
+GET         /logout                         @org.pac4j.play.ApplicationLogoutController.logout()

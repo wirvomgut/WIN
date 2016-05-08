@@ -1,4 +1,5 @@
-@import tags._
+@(url: String)
+
 @import common._
 
 @mainLayout(title = "Login") {
@@ -7,15 +8,15 @@
             <h2 class="ui center aligned header">
                 <img src="assets/images/wvg_logo_quad.png" class="ui tiny image">
                 <div class="content">
-                    Bitte melden sie sich an
+                    Bitte melde Dich an
                 </div>
             </h2>
-            <form class="ui large form">
+            <form class="ui large form" action="@url" method="POST">
                 <div class="ui stacked segment">
                     <div class="field">
                         <div class="ui left icon input">
                             <i class="user icon"></i>
-                            <input type="text" name="email" placeholder="E-mail Adresse">
+                            <input type="text" name="username" placeholder="Benutzername">
                         </div>
                     </div>
                     <div class="field">
@@ -24,7 +25,7 @@
                             <input type="password" name="password" placeholder="Passwort">
                         </div>
                     </div>
-                    <div class="ui fluid large green submit button">Login</div>
+                    <input class="ui fluid large green submit button" type="submit" name="submit" value="Login" />
                 </div>
 
                 <div class="ui error message"></div>
