@@ -4,3 +4,7 @@ body > .grid {
 .login-column {
   max-width: 450px;
 }
+
+#menu-spacer {
+  padding-top: 20px;
+}
