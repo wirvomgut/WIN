@@ -24,6 +24,8 @@ libraryDependencies ++= Seq(
   "com.mohiva" %% "play-silhouette" % "3.0.0",
   "net.codingwell" %% "scala-guice" % "4.0.0",
   "net.ceedubs" %% "ficus" % "1.1.2",
+  "org.scalikejdbc" %% "scalikejdbc" % "2.4.0",
+  "org.scalikejdbc" %% "scalikejdbc-play-initializer" % "2.5.1",
   "com.mohiva" %% "play-silhouette-testkit" % "3.0.0" % "test",
   specs2 % Test,
   cache,

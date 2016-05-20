@@ -2,6 +2,7 @@ package models
 
 import java.util.UUID
 import com.mohiva.play.silhouette.api.{ Identity, LoginInfo }
+import scalikejdbc._
 
 /**
  * The user object.
@@ -22,3 +23,19 @@ case class User(
   fullName: Option[String],
   email: Option[String],
   avatarURL: Option[String]) extends Identity
+
+
+object User extends SQLSyntaxSupport[User]{
+  override val tableName = "users"
+  override val columns = Seq("userID", "loginInfoId", "loginInfoKey", "firstName", "lastName", "fullName", "email", "avatarURL")
+
+  def apply(o: ResultName[User])(rs: WrappedResultSet) = new User(
+    userID          = UUID.fromString(rs.string(o.userID)),
+    loginInfo       = LoginInfo(rs.string(o.loginInfoId),rs.string(o.loginInfoKey)),
+    firstName       = rs.stringOpt(o.firstName),
+    lastName        = rs.stringOpt(o.lastName),
+    fullName        = rs.stringOpt(o.fullName),
+    email           = rs.stringOpt(o.email),
+    avatarURL       = rs.stringOpt(o.avatarURL)
+  )
+}

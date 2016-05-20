@@ -7,13 +7,18 @@ import com.mohiva.play.silhouette.api.LoginInfo
 import models.User
 
 import scala.concurrent.Future
-import play.api.db._
 import play.api.Play.current
+
+import scalikejdbc._
 
 /**
  * Give access to the user object.
  */
 class  UserDAOImpl extends UserDAO {
+  implicit val session = AutoSession
+
+  val sU = User.syntax("sU")
+  val cU = User.column
 
   /**
     * Finds a user by its login info.
@@ -22,19 +27,26 @@ class  UserDAOImpl extends UserDAO {
     * @return The found user or None if no user for the given login info could be found.
     */
   def find(loginInfo: LoginInfo) = {
-    println(loginInfo)
-    var user: Option[User] = None
+    Future(withSQL{
+      select
+        .from(User as sU)
+        .where.eq(sU.loginInfoId, loginInfo.providerID)
+        .and.eq(sU.loginInfoKey, loginInfo.providerKey)
+    }.map(User(sU.resultName)).single.apply())
 
-    DB.withConnection(conn => {
-      val r = conn.createStatement().executeQuery(
-        s"""
-            SELECT * FROM users WHERE loginInfoId='${loginInfo.providerID}' AND loginInfoKey='${loginInfo.providerKey}'
-          """.stripMargin)
-
-      user = extractUser(r)
-    })
-
-    Future.successful(user)
+//    println(loginInfo)
+//    var user: Option[User] = None
+//
+//    DB.withConnection(conn => {
+//      val r = conn.createStatement().executeQuery(
+//        s"""
+//            SELECT * FROM users WHERE loginInfoId='${loginInfo.providerID}' AND loginInfoKey='${loginInfo.providerKey}'
+//          """.stripMargin)
+//
+//      user = extractUser(r)
+//    })
+//
+//    Future.successful(user)
   }
 
   /**
@@ -43,20 +55,24 @@ class  UserDAOImpl extends UserDAO {
    * @param userID The ID of the user to find.
    * @return The found user or None if no user for the given ID could be found.
    */
-  def find(userID: UUID) = {
-    println(userID)
-    var user:Option[User] = None
+  def find(userID: UUID): Future[Option[User]] = DB.autoCommit { implicit session =>
+    Future(withSQL{
+      select.from(User as sU).where.eq(sU.userID, userID.toString)
+    }.map(User(sU.resultName)).single.apply())
 
-    DB.withConnection(conn => {
-      val r = conn.createStatement().executeQuery(
-        s"""
-        select * from users where userID='${userID.toString}'
-      """.stripMargin)
 
-      user = extractUser(r)
-    })
-
-    Future.successful(user)
+//    var user:Option[User] = None
+//
+////    DB.withConnection(conn => {
+////      val r = conn.createStatement().executeQuery(
+////        s"""
+////        select * from users where userID='${userID.toString}'
+////      """.stripMargin)
+////
+////      user = extractUser(r)
+////    })
+//
+//    Future.successful(user)
   }
 
   def extractUser(r:ResultSet) = {
@@ -83,19 +99,32 @@ class  UserDAOImpl extends UserDAO {
    * @param user The user to save.
    * @return The saved user.
    */
-  def save(user: User) = {
-    DB.withConnection(conn => {
-      conn.createStatement().execute(
-        s"""
-        INSERT INTO users (
-          userID, loginInfoId, loginInfoKey, firstName, lastName, fullName, email, avatarURL
-        ) values (
-          '${user.userID}', '${user.loginInfo.providerID}', '${user.loginInfo.providerKey}', '${user.firstName.orNull}',
-          '${user.lastName.orNull}', '${user.fullName.orNull}', '${user.email.orNull}', '${user.avatarURL.orNull}'
-        )
+  def save(user: User): Future[User] = DB.autoCommit { implicit session =>
+    withSQL{
+      insert.into(User).namedValues(
+        cU.userID -> user.userID.toString,
+        cU.loginInfoId -> user.loginInfo.providerID,
+        cU.loginInfoKey -> user.loginInfo.providerKey,
+        cU.firstName -> user.firstName.orNull,
+        cU.lastName -> user.lastName.orNull,
+        cU.fullName -> user.fullName.orNull,
+        cU.email -> user.email.orNull,
+        cU.avatarURL -> user.avatarURL.orNull
+      )
+    }.update().apply()
 
-      """.stripMargin)
-    })
+//    DB.withConnection(conn => {
+//      conn.createStatement().execute(
+//        s"""
+//        INSERT INTO users (
+//          userID, loginInfoId, loginInfoKey, firstName, lastName, fullName, email, avatarURL
+//        ) values (
+//          '${user.userID}', '${user.loginInfo.providerID}', '${user.loginInfo.providerKey}', '${user.firstName.orNull}',
+//          '${user.lastName.orNull}', '${user.fullName.orNull}', '${user.email.orNull}', '${user.avatarURL.orNull}'
+//        )
+//
+//      """.stripMargin)
+//    })
 
     Future.successful(user)
   }
