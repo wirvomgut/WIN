@@ -5,17 +5,17 @@ access.denied = Access denied!
 user.exists = There already exists a user with this email!
 could.not.authenticate = Could not authenticate with social provider! Please try again!
 
-home.title = Silhouette - Home
-sign.up.title = Silhouette - Sign Up
-sign.in.title = Silhouette - Sign In
+home.title = WIN - Startseite
+sign.up.title = WIN - Registrieren
+sign.in.title = WIN - Anmelden
 
 profile.title = Ihr Profil
 
 toggle.navigation = Toggle navigation
 welcome.signed.in = Welcome, you are now signed in!
 
-sign.up.account = Sign up for a new account
-sign.in.credentials = Sign in with your credentials
+sign.up.account = Neuen Benutzer erstellen
+sign.in.credentials = Bitte melde Dich an
 
 menu.home = Startseite
 
@@ -24,14 +24,14 @@ home = Home
 first.name = Vorname
 last.name = Nachname
 full.name = Name
-email = Email
+email = E-Mail
 password = Passwort
-sign.up = Sign up
-sign.in = Sign in
+sign.up = Registrieren
+sign.in = Anmelden
 sign.out = Abmelden
-sign.in.now = Sign in now
+sign.in.now = Jetzt anmelden
 sign.up.now = Registrieren
-already.a.member = Already a member?
+already.a.member = Bereits ein Mitglied?
 not.a.member = Noch kein Benutzerkonto?
 
 remember.me = Remember my login on this computer

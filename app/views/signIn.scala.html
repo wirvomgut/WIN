@@ -10,7 +10,7 @@
             <h2 class="ui center aligned header">
                 <img src='@routes.Assets.at("images/wvg_logo_quad.png")' class="ui tiny image">
                 <div class="content">
-                    Bitte melde Dich an
+                    @Messages("sign.in.credentials")
                 </div>
             </h2>
             @helper.form(action = routes.CredentialsAuthController.authenticate(), 'class -> "ui large form" ) {
